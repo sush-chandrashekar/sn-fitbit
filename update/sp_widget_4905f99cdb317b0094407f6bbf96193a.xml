@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function fitbitCtrl($http) {
+	/* widget controller */
+	var c = this;
+	console.log(c.data.userActivity);
+	if(c.data.userActivity.summary){
+		c.data.steps = numberWithCommas(c.data.userActivity.summary.steps);
+	}
+
+	function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.fitbit {
+
+  position: relative;
+
+  .steps {
+    display: flex;
+    align-items: center;
+
+    .steps-emoji {
+      font-size: 26px;
+    }
+
+    .count {
+      font-size: 25px;
+      margin-left: 20px;
+    }
+  }
+
+  img {
+    position: absolute;
+    height: 25px;
+    right: 10px;
+    top: 6px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>fitbit_activity</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>Fitbit Activity</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function () {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	
+	/*var oc = new GlideRecord('oauth_credential');
+	oc.addQuery('peer', 'a5bc290cdbf53b0094407f6bbf96199b');
+	oc.query();
+	if (oc.next()) {
+		
+		var expdate = oc.expires.getDisplayValue();
+		var gdt = new GlideDateTime(expdate);
+		if(gdt.getNumericValue() <  new GlideDateTime().getNumericValue()){
+			data.status = 'expired or not valid';
+		}else{
+			data.token = oc.token;
+		}
+		
+		
+	} else {
+		data.status = 'expired or not valid';
+	}*/
+	
+	var r = new sn_ws.RESTMessageV2('x_snc_sn_fitbit.Fitbit Activity', 'getActivity');
+	var response = r.execute();
+	var responseBody = response.getBody();
+	var httpStatus = response.getStatusCode();
+	data.userActivity = JSON.parse(responseBody);
+	
+	
+	
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-29 17:47:49</sys_created_on>
+        <sys_id>4905f99cdb317b0094407f6bbf96193a</sys_id>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>Fitbit Activity</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>sp_widget_4905f99cdb317b0094407f6bbf96193a</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-29 21:34:30</sys_updated_on>
+        <template><![CDATA[<section class="fitbit">
+  <sp-panel rect="rect" ng-if="c.data.userActivity.summary">
+    <img src = "fitbit.png"/>
+    <div class="steps">
+      <div class="steps-emoji">
+        &#128099;
+      </div>
+      <div class="count">
+        {{c.data.steps}}
+      </div>
+    </div>
+  </sp-panel>
+</section>]]></template>
+    </sp_widget>
+</record_update>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message">
+    <sys_rest_message action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <authentication_type>oauth2</authentication_type>
+        <basic_auth_password/>
+        <basic_auth_profile/>
+        <basic_auth_user/>
+        <description/>
+        <name>Fitbit Activity</name>
+        <oauth2_profile display_value="Fitbit default_profile">494e290cdbf53b0094407f6bbf9619a9</oauth2_profile>
+        <protocol_name/>
+        <rest_endpoint>https://api.fitbit.com/1/user/-/activities/date/2019-05-29.json</rest_endpoint>
+        <sys_class_name>sys_rest_message</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-29 00:59:34</sys_created_on>
+        <sys_id>696e0640db793b0094407f6bbf9619ea</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Fitbit Activity</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>sys_rest_message_696e0640db793b0094407f6bbf9619ea</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-29 20:58:41</sys_updated_on>
+        <use_basic_auth>false</use_basic_auth>
+        <use_mutual_auth>false</use_mutual_auth>
+    </sys_rest_message>
+</record_update>

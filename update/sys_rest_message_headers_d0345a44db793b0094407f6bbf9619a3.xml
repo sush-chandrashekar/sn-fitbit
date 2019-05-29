@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_headers">
+    <sys_rest_message_headers action="INSERT_OR_UPDATE">
+        <name>Content-Type</name>
+        <rest_message display_value="Fitbit Oauth Get Tokens">e1c35a44db793b0094407f6bbf96199d</rest_message>
+        <sys_class_name>sys_rest_message_headers</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-29 01:27:00</sys_created_on>
+        <sys_id>d0345a44db793b0094407f6bbf9619a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Content-Type</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>sys_rest_message_headers_d0345a44db793b0094407f6bbf9619a3</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-29 01:27:00</sys_updated_on>
+        <value>application/x-www-form-urlencoded</value>
+    </sys_rest_message_headers>
+</record_update>

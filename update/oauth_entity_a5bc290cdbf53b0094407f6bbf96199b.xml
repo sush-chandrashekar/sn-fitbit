@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="oauth_entity">
+    <oauth_entity action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <access_token_lifespan>1800</access_token_lifespan>
+        <active>true</active>
+        <auth_code_lifespan>0</auth_code_lifespan>
+        <auth_url>https://www.fitbit.com/oauth2/authorize</auth_url>
+        <certificate_url/>
+        <client_id>22DQD6</client_id>
+        <client_secret>ogY6xc95BQdL8/6Ov4Ke3XJBc3mqAMymCY1b/dSHY897MaSa+EyjGA==</client_secret>
+        <client_uuid>d1bc290cdbf53b0094407f6bbf961955</client_uuid>
+        <code_challenge_method>S256</code_challenge_method>
+        <comments/>
+        <default_grant_type>authorization_code</default_grant_type>
+        <id_token_lifespan>0</id_token_lifespan>
+        <logo_url/>
+        <message_signature_lifespan>0</message_signature_lifespan>
+        <name>Fitbit</name>
+        <oauth_api_script display_value="OAuthUtil">3e3a3a11c333210016194ffe5bba8f70</oauth_api_script>
+        <protocol_name/>
+        <public_client>false</public_client>
+        <redirect_url>https://empsush2.service-now.com/api/x_snc_sn_fitbit/fitbit_auth</redirect_url>
+        <refresh_token_lifespan>8640000</refresh_token_lifespan>
+        <revoke_token_url/>
+        <salt>0</salt>
+        <skip_authorize>false</skip_authorize>
+        <sys_class_name>oauth_entity</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-28 22:38:56</sys_created_on>
+        <sys_id>a5bc290cdbf53b0094407f6bbf96199b</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>Fitbit</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>oauth_entity_a5bc290cdbf53b0094407f6bbf96199b</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-29 02:23:02</sys_updated_on>
+        <token_url>https://api.fitbit.com/oauth2/token</token_url>
+        <type>oauth_provider</type>
+        <use_mutual_auth>false</use_mutual_auth>
+        <user/>
+    </oauth_entity>
+</record_update>

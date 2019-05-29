@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="oauth_entity_scope">
+    <oauth_entity_scope action="INSERT_OR_UPDATE">
+        <name>activity</name>
+        <oauth_entity display_value="Fitbit">a5bc290cdbf53b0094407f6bbf96199b</oauth_entity>
+        <oauth_entity_scope>activity</oauth_entity_scope>
+        <sys_class_name>oauth_entity_scope</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-28 22:47:23</sys_created_on>
+        <sys_id>f710f58cdbf53b0094407f6bbf9619cb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>activity</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>oauth_entity_scope_f710f58cdbf53b0094407f6bbf9619cb</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-28 22:47:23</sys_updated_on>
+    </oauth_entity_scope>
+</record_update>

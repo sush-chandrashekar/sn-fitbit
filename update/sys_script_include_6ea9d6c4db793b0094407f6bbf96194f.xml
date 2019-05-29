@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_sn_fitbit.FitBitOauthHandler</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>FitBitOauthHandler</name>
+        <script><![CDATA[var FitBitOauthHandler = Class.create();
+FitBitOauthHandler.prototype = {
+	
+	logInfo:"FitBitOauthHandler logging",
+	/* Called by a custom OAuth response provide name of the ouath profile */
+	initialize: function(/* Outbound REST name */ tokenReq, /* sysID of calling REST def*/callingID) {
+		try{
+			this.getTokenReq = tokenReq;
+			this.logInfo +="\n Token request REST : " + this.getTokenReq;
+			this.logInfo +="\n calling function ID : " + callingID;
+			this.callingRestMsg = new GlideRecord("sys_rest_message");
+			this.callingRestMsg.get(callingID);
+			this.logInfo +="\n Calling REST MSG " + this.callingRestMsg.name;
+			this.oauthProfileRec = this.callingRestMsg.oauth2_profile;
+			this.logInfo +="\n Profile : " + this.oauthProfileRec.name;
+			//this.oauthRegProfile = this._upsertReqProfile();
+			//this.logInfo +="\n Oauth Requestor Profile : " + this.oauthRegProfile;
+			gs.info(this.logInfo,"OauthInfo");
+			
+		}
+		catch(err){
+			this.logInfo +="\n error intilizing FitBitOauthHandler\n" + err.message;
+			gs.error(this.logInfo,"OauthInfo");
+		}
+	},
+	/******************************************************************
+	
+ 	*******************************************************************
+ 	
+ 	*******************************************************************
+ 	* 04-10-2016   SETrumble   Fruition Partners
+ 	********************************************************************/
+	
+	getToken: function(code){
+		try {
+			var r = new sn_ws.RESTMessageV2(this.getTokenReq, 'post');
+			r.setStringParameter('newCode',code);
+			r.setStringParameter('clientId', this.oauthProfileRec.oauth_entity.client_id);
+			r.setStringParameter('grantType', this.oauthProfileRec.grant_type);
+			r.setStringParameter('redirectURL', this.oauthProfileRec.oauth_entity.redirect_url);
+			
+			var response = r.execute();
+			var responseBody = response.getBody();
+			var httpStatus = response.getStatusCode();
+			this.logInfo +="\nSTATUS : "+httpStatus;
+			this.logInfo +="\nBody :\n "+responseBody;
+			
+			var rspObject = JSON.parse(responseBody);
+			if (rspObject.access_token){
+				this._upsertToken(rspObject.access_token,"access_token",rspObject.expires_in);
+			}else{
+				this.logInfo +=" *** No Token Returned ********" ;
+				gs.error(this.logInfo,"OauthInfo");
+			}
+			//this._upsertToken(rspObject.refresh_token,"refresh_token",86400);
+			
+			var retStr =  this.logInfo + " Access token = " + rspObject.access_token;
+			
+			return retStr;
+			
+		}
+		catch(ex) {
+			this.logInfo +="\nerror in gettoken " + ex.getMessage();
+			gs.error(this.logInfo,"OauthInfo");
+		}
+		
+	},
+	/*
+	_restMessageWithProfile: function(){
+		var grRestMsg = new GlideRecord("sys_rest_message");
+		grRestMsg.addQuery("authentication_type","oauth2");
+		grRestMsg.addQuery("oauth2_profile",this.oauthProfileRec.sys_id);
+		grRestMsg.query();
+		while (grRestMsg.next()){
+			this._upsertProfile(grRestMsg.sys_id);
+		}
+	},
+	
+ 	*/
+	_upsertReqProfile: function(){
+		try{
+			this.logInfo +="\n getting Oauth Requestor Profile - oauth_entity_profile:" + this.oauthProfileRec.sys_id;
+			this.logInfo +=" requestor_id : " + this.callingRestMsg.sys_id;
+			var ReqProfileId = "";
+			var grRequestProfile = new GlideRecord("oauth_requestor_profile");
+			//grRequestProfile.addQuery("oauth_entity_profile",this.oauthProfileRec.sys_id);
+			grRequestProfile.addQuery("requestor_context","sys_rest_message");
+			grRequestProfile.addQuery("requestor_id",this.callingRestMsg.sys_id);
+			grRequestProfile.query();
+			if (grRequestProfile.next()){
+				//no update needed if alread there
+				//grRequestProfile.update();
+				ReqProfileId = grRequestProfile.sys_id+"";
+				
+				this.logInfo +="\noauth_requestor_profile found ID: " + ReqProfileId;
+			}else{
+				grRequestProfile.init();
+				grRequestProfile.requestor_context ="sys_rest_message";
+				//grRequestProfile.oauth_entity_profile = this.oauthProfileRec.sys_id;
+				grRequestProfile.requestor_id =this.callingRestMsg.sys_id;
+				grRequestProfile.insert();
+				ReqProfileId = grRequestProfile.sys_id+"";
+				this.logInfo +="\nNew oauth_requestor_profile inserted ID: " + ReqProfileId;
+				
+			}
+			return ReqProfileId;
+		}catch(err){
+			this.logInfo += "error _upsertReqProfile :\n" + err.message;
+			return"";
+		}
+		
+	},
+	_upsertToken: function(vToken,token_type, expSec){
+		this.logInfo +="\n calling _upsertToken: Token:" + vToken;
+		this.logInfo +="\n token type:" + token_type + "/nexpsec:" +expSec ;
+		this.logInfo +="\noauth_requestor_profile : " + this.oauthRegProfile;
+		var gdt = new GlideDateTime();
+		gdt.addSeconds(expSec);
+		this.logInfo +="\n expires in: Token:" + gdt.getDisplayValue();
+		var cred = new GlideRecord("oauth_credential");
+		cred.addQuery("peer",this.oauthProfileRec.oauth_entity);
+		cred.addQuery("oauth_requestor_profile",this.oauthRegProfile);
+		cred.addQuery("type",token_type);
+		cred.query();
+		if(cred.next()){
+			cred.token = vToken;
+			cred.expires = gdt;
+			cred.update();
+			this.logInfo +="\n Oauth credentials updated: " + cred.sys_id;
+			
+		}else{
+			cred.peer = this.oauthProfileRec.oauth_entity;
+			cred.oauth_requestor_profile = this.oauthRegProfile;
+			cred.type=token_type;
+			cred.token = vToken;
+			cred.expires = gdt;
+			cred.insert();
+			this.logInfo +="\n New Oauth credentials Inserted: " + cred.sys_id;
+		}
+		
+	},
+	
+	type: 'FitBitOauthHandler'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>sush.chan</sys_created_by>
+        <sys_created_on>2019-05-29 01:53:49</sys_created_on>
+        <sys_id>6ea9d6c4db793b0094407f6bbf96194f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>FitBitOauthHandler</sys_name>
+        <sys_package display_value="SN Fitbit" source="x_snc_sn_fitbit">568c29c8dbf53b0094407f6bbf961955</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="SN Fitbit">568c29c8dbf53b0094407f6bbf961955</sys_scope>
+        <sys_update_name>sys_script_include_6ea9d6c4db793b0094407f6bbf96194f</sys_update_name>
+        <sys_updated_by>sush.chan</sys_updated_by>
+        <sys_updated_on>2019-05-29 01:53:49</sys_updated_on>
+    </sys_script_include>
+</record_update>
